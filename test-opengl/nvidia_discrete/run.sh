@@ -17,6 +17,7 @@ docker run \
   --device /dev/dri \
   -e DISPLAY=$DISPLAY \
   -e QT_X11_NO_MITSHM=1 \
+  --gpus all \
   glvnd-x:nvidia_discrete \
   nvidia-smi && glmark2
 
