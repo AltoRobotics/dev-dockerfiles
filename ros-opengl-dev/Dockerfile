@@ -42,7 +42,27 @@ RUN apt-get update && apt-get install -y \
     unzip \
     locales \
     software-properties-common \
+    tmux \
     && rm -rf /var/lib/apt/lists/*
+
+# Set up Starship
+RUN curl -sS https://starship.rs/install.sh | sh -s -- -y && \
+    echo '\neval "$(starship init bash)"\n' >> /root/.bashrc
+
+# Set up McFly
+RUN curl -LSfs https://raw.githubusercontent.com/cantino/mcfly/master/ci/install.sh | sh -s -- --git cantino/mcfly && \
+    echo '\neval "$(mcfly init bash)"\n' >> /root/.bashrc && \
+    touch /root/.bash_history
+
+# Set up github as known host for ssh
+RUN mkdir /root/.ssh/ \
+ && touch /root/.ssh/known_hosts \
+ && ssh-keyscan github.com >> /root/.ssh/known_hosts
+
+# Clone private repo without explicitly copying the ssh key
+RUN --mount=type=secret,id=ssh_id,target=/root/.ssh/id_rsa \
+    git clone git@github.com:AltoRobotics/dotconfig.git /etc/dotconfig && \
+    ln -s /etc/dotconfig/.tmux.conf /root/.tmux.conf
 
 # Some QT-Apps/Gazebo don't show controls without this
 ENV QT_X11_NO_MITSHM 1
