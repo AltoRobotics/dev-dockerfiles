@@ -5,10 +5,10 @@
 # name is already running.
 # ====================================
 
-if (( "$#" < 1 || "$#" > 2 ))
+if (( "$#" < 1 || "$#" > 3 ))
 then
-    echo "Illegal number of parameters. Usage: run.sh <container-id> [image-name]"
-    echo "Example: run.sh ros-container"
+    echo "Illegal number of parameters. Usage: run.sh <container-id> [image-name] [mount volume]"
+    echo "Example: run.sh ros-container ros_ws_path"
     exit 1
 fi
 
@@ -16,13 +16,15 @@ fi
 # Specify some variables that are useful while setting up the container
 # ====================================
 
-CONTAINERNAME=${1:-"ros-container"}
-IMAGENAME=${2:-"alto/ros:melodic-dev"}
+CONTAINERNAME=${1}
+IMAGENAME=${2}
+MOUNT_VOLUME=${3}
 XSOCK="/tmp/.X11-unix"
 
 # ====================================
-# With two arguments, the user wants an already existing container.
-# With three, a new one must be spawned
+# With one argument, the user wants an already existing container.
+# With two, a new one must be spawned
+# With three, the user also wants to mount a volume in the container
 # Create the proper container name according to whether it exists or not
 # ====================================
 
@@ -44,31 +46,39 @@ else
     fi
 fi
 
-echo "Running container $CONTAINERNAME"
-
 # ====================================
 # Add --network=host and --privileged if connecting to other ROS nodes
 # Add --volume=<host-volume>:<mount-point> for sharing the host filesystem
 # Add --gpus all: Make nVidia card visible in the docker container
 # ====================================
 
+echo "Running container $CONTAINERNAME"
+
+if [ "${3}" ]
+then 
+    MOUNTING_VOLUME="--volume=$(realpath ${3}):/host"
+    echo "Mounting volume ${3} into /host"
+else
+    MOUNTING_VOLUME=""
+fi
+
+sudo xhost +local:root
+
 if [ ! "$(docker ps -a | grep $CONTAINERNAME)" ]
 then
-    sudo xhost +local:root
     docker run \
         -it \
         --name=$CONTAINERNAME \
         -e DISPLAY \
         -e QT_X11_NO_MITSHM=1 \
         --volume=$XSOCK:$XSOCK:rw \
-        --volume=/dev:/dev/ \
+        --volume=${HOME}/.ssh:/root/.ssh:ro \
+        --volume=/dev:/dev/ ${MOUNTING_VOLUME} \
         --device /dev/dri \
         --privileged \
+        --gpus all \
         $IMAGENAME
-    sudo xhost -local:root
 else
     docker start $CONTAINERNAME > /dev/null
     docker exec -it $CONTAINERNAME bash
 fi
-
-
