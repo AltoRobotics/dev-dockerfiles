@@ -8,9 +8,9 @@ Use this repo to play around with a dockerized ROS environment with a working Op
 
 Build the image via the `build.sh` script. Make sure to specify the `ROS_DISTRO` when running the script. If you want to leverage a discrete nVidia GPU, make sure to install the `nvidia-container-runtime` package alongside Docker and add the `--gpus all` flag inside the `run.sh`.
 
-If the needed ros distribution is `melodic`, for instance
+If the needed ros distribution is `humble`, for instance
 
 ```shell
-ROS_DISTRO=melodic ./build.sh
-./run.sh ros-container alto/ros:melodic-dev
+ROS_DISTRO=humble ./build.sh
+./run.sh ros-container alto/ros:humble-dev
 ```
