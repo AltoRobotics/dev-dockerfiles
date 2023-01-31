@@ -30,6 +30,9 @@ RUN apt update && apt install -y \
     build-essential \
     gdb \
     cmake-curses-gui \
+    ninja-build \
+    python3-wheel \
+    python3-pip \
     nano \
     curl \
     lsb-release \
