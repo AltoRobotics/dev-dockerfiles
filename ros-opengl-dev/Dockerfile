@@ -44,8 +44,7 @@ RUN apt update && apt install -y \
     htop \
     mc \
     vim \
-    && apt upgrade -y \
-    && rm -rf /var/lib/apt/lists/*
+    && apt upgrade -y
 
 # Set up Starship
 RUN curl -sS https://starship.rs/install.sh | sh -s -- -y && \
@@ -64,6 +63,7 @@ RUN ln -s /etc/dotconfig/.tmux.conf /root/.tmux.conf && \
 
 # Some QT-Apps/Gazebo don't show controls without this
 ENV QT_X11_NO_MITSHM 1
+ENV QT_GRAPHICSSYSTEM "native"
 
 # Env vars for the nvidia-container-runtime.
 ENV NVIDIA_VISIBLE_DEVICES all
