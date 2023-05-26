@@ -1,0 +1,28 @@
+---
+version: '3.7'
+
+networks:
+  ros-bridged:
+    driver: bridge
+  ros-host:
+    driver: host
+
+services:
+  husky-bringup:
+    container_name: foxy-husky-dev
+    image: alto/ros:foxy-husky-dev
+    # can also use the env_file attribute instead of environment
+    # env_file:
+    #  - ./husky_config/husky_config.env
+    environment:
+      - ROS_DOMAIN_ID: 11
+    volumes:
+      - ./husky_config:/husky_config
+      - /dev:/dev
+    # networks:
+    # - ros-host
+    network_mode: host
+    privileged: true
+    restart: always
+    command: ". /husky_config/husky_config.env && ros2 launch husky_base base.launch.py"
+    # might also use entrypoint attribute to set an entrypoint instead of command
