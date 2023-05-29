@@ -24,5 +24,6 @@ services:
     network_mode: host
     privileged: true
     restart: always
-    command: ". /husky_config/husky_config.env && ros2 launch husky_base base.launch.py"
+    # command: ". /husky_config/husky_config.env && ros2 launch husky_base base.launch.py"
     # might also use entrypoint attribute to set an entrypoint instead of command
+    command: bash -c ". /husky_config/husky_config.env && ros2 launch husky_base base.launch.py"
