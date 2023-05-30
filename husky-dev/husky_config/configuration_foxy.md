@@ -1,5 +1,7 @@
 # Environment variables for Husky configuration on Foxy
 
+These are all the environment variables that are used in the Foxy branch of the Husky ROS2 packages. Most of these are useful for activating features of the robot, while some are probably legacy and/or unused.
+
 ## Robot description
 ### Package husky_description (husky_macro.urdf.xacro)
 #### Laser
@@ -137,4 +139,19 @@
 | `HUSKY_REALSENSE_ENABLED`               | `false`                   | Realsense is installed |
 | `HUSKY_URDF_EXTRAS`                     | ?                         | ? |
 
+## Robot gazebo configuration
+### Package husky_gazebo (gazebo.launch.py)
+
+| Env variable name                       | Default                   | Description |
+| - | - | - |
+| `GAZEBO_MODEL_PATH`                     | None                      | Where gazebo should look for models |
+
+### Package husky_gazebo (spawn_husky.launch)
+(Unsure if these are legacy and unused, given their XML format and weird naming conventions)
+
+| Env variable name                       | Default                   | Description |
+| - | - | - |
+| `HUSKY_LMS1XX_ENABLED`                  | `false`                   | Laser is enabled |
+| `HUSKY_REALSENSE_ENABLED`               | `false`                   | Realsense is installed |
+| `HUSKY_URDF_EXTRAS`                     | ?                         | ? |
 
