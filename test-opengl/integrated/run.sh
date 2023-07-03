@@ -16,6 +16,6 @@ docker run \
   -e DISPLAY=$DISPLAY \
   -e QT_X11_NO_MITSHM=1 \
   glvnd-x:integrated \
-  glmark2
+  bash -c "glmark2"
 
 sudo xhost -local:root
