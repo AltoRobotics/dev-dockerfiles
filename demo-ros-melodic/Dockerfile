@@ -77,7 +77,7 @@ RUN pip3 install --ignore-installed PyYAML \
     simple-pid==2.0.0 \
     ultralytics==8.0.157 \
     supervision==0.13.0 \
-    mediapipe==0.10.1 \
+    mediapipe==0.10.7 \
     opencv_contrib_python==4.7.0.72 
     
 # Add ROS source to bashrc and refresh
