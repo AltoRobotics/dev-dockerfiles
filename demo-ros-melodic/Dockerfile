@@ -78,7 +78,8 @@ RUN pip3 install --ignore-installed PyYAML \
     ultralytics==8.0.157 \
     supervision==0.13.0 \
     mediapipe==0.10.7 \
-    opencv_contrib_python==4.7.0.72 
+    opencv_contrib_python==4.7.0.72 \
+    pexpect==4.8.0
     
 # Add ROS source to bashrc and refresh
 RUN /bin/bash -c 'echo "source ~/catkin_ws/devel/setup.bash" >> ~/.bashrc && \

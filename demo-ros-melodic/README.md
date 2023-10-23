@@ -14,9 +14,11 @@ Build the ros-melodic:demo-dev image via the `build.sh` script.
 Finally, run the `run.sh` script to install everything that's needed for the demo (librealsense, ros-realsense, python3.8 and the related cv_bridge for ROS1, ...). Make sure to install the `nvidia-container-runtime` package alongside Docker and add the `--gpus all` if you want to leverage a discrete nVidia GPU.
 
 ```shell
+cd ros-opengl-dev
 ROS_DISTRO=melodic
-../ros-opengl-dev/build.sh
+./build.sh
 
+cd ../demo-ros-melodic
 docker build -t alto/ros-melodic:demo-dev .
 ./run.sh demo-container alto/ros-melodic:demo-dev
 ```

@@ -72,7 +72,7 @@ then
         -e DISPLAY \
         -e QT_X11_NO_MITSHM=1 \
         --volume=$XSOCK:$XSOCK:rw \
-        --volume=${HOME}/.ssh:${HOME}/.ssh:ro \
+        --volume=${HOME}/.ssh:/root/.ssh:ro \
         --volume=/dev:/dev/ ${MOUNTING_VOLUME} \
         --device /dev/dri \
 	--network=host \
