@@ -7,7 +7,7 @@ FROM ${from}
 ENV DEBIAN_FRONTEND=noninteractive
 
 
-### This first part is copied from Fabrizio's ros-opengl-dev docker image
+###### This first part is copied from Fabrizio's ros-opengl-dev docker image #####
 
 # Dependencies for glvnd and X11.
 RUN apt update && \
@@ -37,6 +37,7 @@ RUN apt update && apt install -y \
     python3-wheel \
     python3-pip \
     nano \
+    openssh-client \
     curl \
     lsb-release \
     wget \
@@ -51,7 +52,7 @@ RUN apt update && apt install -y \
 
 # Set up Starship
 RUN curl -sS https://starship.rs/install.sh | sh -s -- -y && \
-    echo '\neval "$(starship init bash)"\n' >> /root/.bashrc
+    echo '\neval "$(starship init bash)"' >> /root/.bashrc
 
 # Set up McFly
 RUN curl -LSfs https://raw.githubusercontent.com/cantino/mcfly/master/ci/install.sh | sh -s -- --git cantino/mcfly && \
@@ -73,38 +74,41 @@ ENV NVIDIA_VISIBLE_DEVICES all
 ENV NVIDIA_DRIVER_CAPABILITIES graphics,utility,compute
 
 
-### This second part is related to the follow-me demo
+###### This second part is related to the follow-me demo ######
 
 # Install librealsense and realsense-ros
 RUN apt update && \
     sudo apt install -y -qq ros-humble-librealsense2* && \
     sudo apt install -y -qq ros-humble-realsense2-*
 
-# Create workspace folder
-RUN apt update && \
-    mkdir /root/ros2_ws && mkdir /root/ros2_ws/src && \
-    cd /root/ros2_ws && colcon build
-    
-# Add ROS source to bashrc and refresh
-#RUN echo '\nsource /opt/ros/humble/setup.bash\n' >> /root/.bashrc && \
-#    echo 'source /root/ros2_ws/install/setup.bash\n' >> /root/.bashrc && \
-#    source /root/.bashrc
-
 # Install gesture recognition requirements
-RUN apt install -y -qq libcanberra-gtk-module libcanberra-gtk3-module && \
-    pip install --ignore-installed mediapipe==0.10.7 \
+RUN apt update && apt install -y -qq \
+    libcanberra-gtk-module \
+    libcanberra-gtk3-module && \
+    pip install --ignore-installed \
+    mediapipe==0.10.7 \
     numpy==1.26.1 \
     opencv_contrib_python==4.8.1.78
-        
+
 # Install YOLOv8 requirements
-RUN pip install --ignore-installed ultralytics==8.0.213 \
+RUN pip install --ignore-installed \
+    ultralytics==8.0.213 \
     supervision==0.16 && \
-    pip uninstall -y matplotlib \
+    pip uninstall -y \
+    matplotlib \
     opencv_python_headless
-    
-# Clone follow-me repo from GitHub
-RUN cd /root/ros2_ws/src && git clone https://github.com/AltoRobotics/ros2-follow-me && \
-    cd /root/ros2_ws && colcon build && source install/setup.bash
+
+# Prepare ros2 workspace
+RUN mkdir -p /root/ros2_ws/src && \
+#    cd /root/ros2_ws/src && git clone git@github.com:AltoRobotics/ros2-follow-me.git && \
+    cd /root/ros2_ws && colcon build
+
+# Add ROS source to bashrc and refresh
+## The /bin/bash -c format is needed to overcome an issue with source command in Dockerfile
+RUN /bin/bash -c 'echo "source /opt/ros/humble/setup.bash" >> /root/.bashrc && \
+    echo "source /root/ros2_ws/install/setup.bash" >> /root/.bashrc && \
+    source /root/.bashrc'
 
 # Show shell at startup
 CMD ["bash"]
+
