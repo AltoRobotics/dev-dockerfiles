@@ -77,6 +77,7 @@ then
         --device /dev/dri \
 	--network=host \
         --privileged \
+        --gpus all \
         $IMAGENAME
 else
     docker start $CONTAINERNAME > /dev/null
