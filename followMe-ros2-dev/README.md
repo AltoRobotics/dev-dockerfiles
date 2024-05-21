@@ -20,7 +20,7 @@ cd followMe-ros2-dev
 Then, run the `run.sh` script to create a container with all the settings you need. Install the `nvidia-container-runtime` package alongside Docker and add the `--gpus all` flag into the `run.sh` if you want to leverage a discrete Nvidia GPU.
 
 ```shell
- ./run.sh ros2-followMe alto/ros:humble-dev
+ ./run.sh ros2-followMe alto/ros-humble:followMe-dev
 ```
 
 Once the container starts, clone the [follow-me package](https://github.com/AltoRobotics/ros2-follow-me.git) containing the ROS2 nodes in the appropriate workspace, build everything, and source the `setup.bash` script:
