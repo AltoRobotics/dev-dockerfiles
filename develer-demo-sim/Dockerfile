@@ -50,9 +50,12 @@ RUN curl -sS https://starship.rs/install.sh | sh -s -- -y && \
 
 # Set up ros workspace
 
+RUN echo '\nsource /usr/share/gazebo/setup.bash\n' >> /root/.bashrc
+RUN echo '\nsource /opt/ros/humble/setup.bash\n' >> /root/.bashrc
 RUN echo '\nsource $ROS2_WS_ROOT/install/setup.bash\n' >> /root/.bashrc
 
-# Show shell at startup
+# Set entrypoint
 
-# CMD ["ros2 launch valkyrie_bringup valkyrie_bringup_sim.launch.py launch_teleop:=false use_sim:=true"]
+COPY ros_entrypoint.sh /ros_entrypoint.sh
+ENTRYPOINT ["/ros_entrypoint.sh"]
 CMD ["bash"]

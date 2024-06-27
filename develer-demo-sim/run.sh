@@ -67,7 +67,7 @@ sudo xhost +local:root
 if [ ! "$(docker ps -a | grep $CONTAINERNAME)" ]
 then
     docker run \
-        -it
+        -it \
         --name=$CONTAINERNAME \
         -e DISPLAY \
         -e QT_X11_NO_MITSHM=1 \
@@ -81,7 +81,8 @@ then
         --device /dev/ttyACM0 \
         --privileged \
 	    --network=host \
-        $IMAGENAME
+        $IMAGENAME \
+        ros2 launch valkyrie_bringup valkyrie_bringup_sim.launch.py launch_teleop:=false use_sim:=true
 else
     docker start $CONTAINERNAME > /dev/null
     docker exec -it $CONTAINERNAME bash
