@@ -67,7 +67,7 @@ sudo xhost +local:root
 if [ ! "$(docker ps -a | grep $CONTAINERNAME)" ]
 then
     docker run \
-        -it
+        -it \
         --name=$CONTAINERNAME \
         -e DISPLAY \
         -e QT_X11_NO_MITSHM=1 \
