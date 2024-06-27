@@ -22,10 +22,4 @@ To start a container run
 ./run.sh valkyrie `develer/ros:<ROS_DISTRO>`
 ```
 
-substituting your desired ROS distro to `<ROS_DISTRO>` (at the moment `humble`). Then, to launch the Valkyrie simulation, run
-
-```shell
-ros2 launch valkyrie_bringup valkyrie_bringup_sim.launch.py launch_teleop:=false use_sim:=true
-```
-
-in the container shell.
+substituting your desired ROS distro to `<ROS_DISTRO>` (at the moment `humble`). This will also launch the Valkyrie simulation.
