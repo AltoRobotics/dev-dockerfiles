@@ -1,0 +1,33 @@
+services:
+  valkyrie:
+    build:
+      context: ./valkyrie-sim
+      args:
+        ros_distro: ${ROS_DISTRO}
+    image: develer/ros:${ROS_DISTRO}
+    container_name: valkyrie
+    stdin_open: true
+    tty: true
+    network_mode: host
+    environment:
+      DISPLAY: ${DISPLAY}
+      XAUTHORITY: ${XAUTHORITY}
+      QT_X11_NO_MITSHM: 1
+      WAYLAND_DISPLAY: ${WAYLAND_DISPLAY}
+      XDG_RUNTIME_DIR: ${XDG_RUNTIME_DIR}
+    volumes:
+      - ${XSOCK}:${XSOCK}:rw
+      - ${XAUTHORITY}:${XAUTHORITY}
+      - ${HOME}/.ssh:${HOME}/.ssh:ro
+      - /dev:/dev/
+    devices:
+      - /dev/dri
+      - /dev/ttyACM0
+    privileged: true
+    command: ros2 launch valkyrie_bringup valkyrie_bringup_sim.launch.py launch_teleop:=false use_sim:=true rosbridge:=true
+
+  teleop-control:
+    build: ./react-go-embed
+    image: teleop-control
+    container_name: teleop-control
+    network_mode: host
