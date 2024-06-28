@@ -16,13 +16,12 @@ services:
       WAYLAND_DISPLAY: ${WAYLAND_DISPLAY}
       XDG_RUNTIME_DIR: ${XDG_RUNTIME_DIR}
     volumes:
-      - ${XSOCK}:${XSOCK}:rw
-      - ${XAUTHORITY}:${XAUTHORITY}
       - ${HOME}/.ssh:${HOME}/.ssh:ro
-      - /dev:/dev/
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - /mnt/wslg:/mnt/wslg
+      - /usr/lib/wsl:/usr/lib/wsl
     devices:
       - /dev/dri
-      - /dev/ttyACM0
     privileged: true
     command: ros2 launch valkyrie_bringup valkyrie_bringup_sim.launch.py launch_teleop:=false use_sim:=true rosbridge:=true
 
