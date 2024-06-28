@@ -28,6 +28,6 @@ services:
 
   teleop-control:
     build: ./react-go-embed
-    image: teleop-control
+    image: develer/teleop-control
     container_name: teleop-control
     network_mode: host
