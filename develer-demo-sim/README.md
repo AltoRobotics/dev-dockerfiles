@@ -31,3 +31,17 @@ To stop the containers run
 ```shell
 ./stop.sh
 ```
+
+# ERRORS
+
+If you have error like 
+```shell
+=> CANCELED [teleop-control internal] load metadata for docker.io/library/alpine:latest                                                                                                   0.4s
+=> ERROR [teleop-control internal] load metadata for docker.io/library/node:16-alpine                                                                                                     0.4s
+=> CANCELED [teleop-control internal] load metadata for docker.io/library/golang:1.18-alpine                                                                                              0.4s
+=> ERROR  [valkyrie internal] load metadata for docker.io/osrf/ros:humble-desktop
+```
+
+look at 
+
+**https://stackoverflow.com/questions/66912085/why-is-docker-compose-failing-with-error-internal-load-metadata-suddenly**
