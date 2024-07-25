@@ -29,7 +29,7 @@ RUN apt update && \
 
 # Install some python related non-default dependencies
 
-RUN pip3 install  numpy==1.25.2 scipy==1.11.3 numpy-quaternion
+RUN pip3 install  numpy==1.25.2 scipy==1.11.3 numpy-quaternion roslibpy
 
 # Set up environment variables
 

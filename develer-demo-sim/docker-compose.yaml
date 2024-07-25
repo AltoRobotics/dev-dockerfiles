@@ -19,15 +19,27 @@ services:
       - ${XSOCK}:${XSOCK}:rw
       - ${XAUTHORITY}:${XAUTHORITY}
       - ${HOME}/.ssh:${HOME}/.ssh:ro
-      - /dev:/dev/
+      - /home/ste/src/ros2_ws/:/mnt/ws
     devices:
       - /dev/dri
-      - /dev/ttyACM0
     privileged: true
-    command: ros2 launch valkyrie_bringup valkyrie_bringup_sim.launch.py launch_teleop:=false use_sim:=true rosbridge:=true
+    command: ros2 launch -d valkyrie_bringup valkyrie_bringup_sim.launch.py launch_teleop:=false use_sim:=true rosbridge:=false websocket:=true
 
-  teleop-control:
-    build: ./react-go-embed
-    image: develer/teleop-control
-    container_name: teleop-control
+  backend:
+    build: ./backend
+    image: develer/backend
+    container_name: backend
     network_mode: host
+
+  frontend:
+    build: ./frontend
+    image: develer/frontend
+    container_name: frontend
+    network_mode: host
+    stdin_open: true
+    tty: true   
+      #  teleop-control:
+      #    build: ./react-go-embed
+      #    image: develer/teleop-control
+      #    container_name: teleop-control
+      #    network_mode: host
