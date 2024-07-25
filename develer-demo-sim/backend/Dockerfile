@@ -1,22 +1,16 @@
 ############################
 # Backend
 ############################
-FROM --platform=linux/amd64 golang:latest AS builder_golang
+FROM --platform=linux/amd64 golang:1.22.5-bookworm
 
-RUN apt-get install -y --no-install-recommends make
+RUN apt update && apt install -y --no-install-recommends make sqlite3
 
 RUN mkdir -p /backend
 COPY code /backend/
 WORKDIR /backend
+RUN make backend-populate-db
 RUN make backend-build
 
-############################
-# STEP 3 build a small image to run it all
-############################
-FROM --platform=linux/amd64 scratch
-
-# Copy our static executable
-COPY --from=builder_golang /backend/server /go/bin/server
-
 EXPOSE 8080
-ENTRYPOINT ["/go/bin/server"]
+#ENTRYPOINT ["/backend/server"]
+ENTRYPOINT ["/usr/bin/make", "backend-run"]

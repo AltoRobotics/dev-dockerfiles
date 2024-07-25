@@ -14,7 +14,7 @@ ALTO_ROBOTICS_NODE_UI_FRONTEND_PATH="./frontend/"
 git clone -b sb/websocket git@github.com:AltoRobotics/grimorio.git ${GRIMORIO_PATH}
 
 [[ -d ${ALTO_ROBOTICS_NODE_UI_BACKEND_PATH} ]] && rm -rf ${ALTO_ROBOTICS_NODE_UI_BACKEND_PATH}
-git clone git@github.com:develersrl/alto-robotics-node-ui.git ${ALTO_ROBOTICS_NODE_UI_BACKEND_PATH}
+git clone -b sb/teleop git@github.com:develersrl/alto-robotics-node-ui.git ${ALTO_ROBOTICS_NODE_UI_BACKEND_PATH}
 
 cp -rvf ${ALTO_ROBOTICS_NODE_UI_BACKEND_PATH}/web ${ALTO_ROBOTICS_NODE_UI_FRONTEND_PATH}
 cp ${ALTO_ROBOTICS_NODE_UI_BACKEND_PATH}/.env.example ${ALTO_ROBOTICS_NODE_UI_FRONTEND_PATH}/web/.env

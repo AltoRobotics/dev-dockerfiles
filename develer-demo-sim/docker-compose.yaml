@@ -30,6 +30,8 @@ services:
     image: develer/backend
     container_name: backend
     network_mode: host
+    stdin_open: true
+    tty: true   
 
   frontend:
     build: ./frontend
@@ -38,8 +40,3 @@ services:
     network_mode: host
     stdin_open: true
     tty: true   
-      #  teleop-control:
-      #    build: ./react-go-embed
-      #    image: develer/teleop-control
-      #    container_name: teleop-control
-      #    network_mode: host
