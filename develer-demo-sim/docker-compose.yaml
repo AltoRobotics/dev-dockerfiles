@@ -23,6 +23,13 @@ services:
     devices:
       - /dev/dri
     privileged: true
+    deploy:
+      resources:
+        reservations:
+          devices:
+             - driver: nvidia
+               count: all
+               capabilities: [gpu,graphics]
     command: ros2 launch -d valkyrie_bringup valkyrie_bringup_sim.launch.py launch_teleop:=false use_sim:=true rosbridge:=false websocket:=true
 
   backend:
