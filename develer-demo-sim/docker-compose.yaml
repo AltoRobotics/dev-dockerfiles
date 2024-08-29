@@ -29,6 +29,6 @@ services:
   web:
     build:
       context: ./go
-    image: node-ui
+    image: develer/node-ui
     container_name: node-ui
     network_mode: host
