@@ -24,10 +24,11 @@ services:
       - /dev/dri
       - /dev/ttyACM0
     privileged: true
-    command: ros2 launch valkyrie_bringup valkyrie_bringup_sim.launch.py launch_teleop:=false use_sim:=true rosbridge:=true
+    command: ros2 launch valkyrie_bringup valkyrie_bringup_sim.launch.py launch_teleop:=false use_sim:=true rosbridge:=false websocket:=true quickmission:=true
 
-  teleop-control:
-    build: ./react-go-embed
-    image: develer/teleop-control
-    container_name: teleop-control
+  web:
+    build:
+      context: ./go
+    image: node-ui
+    container_name: node-ui
     network_mode: host
