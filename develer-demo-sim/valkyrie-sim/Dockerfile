@@ -16,7 +16,7 @@ RUN apt update && \
     apt -y install --no-install-recommends gperf x11-apps glmark2 \
     ccache curl tmux wget can-utils  \
     python3-dev python3-pip python3-setuptools python3-tk python3-wheel xz-utils file gdb htop \
-    libsdl2-dev libmagic1 sudo udev libncursesw5-dev openocd usbutils vim python2
+    libsdl2-dev libmagic1 sudo udev libncursesw5-dev openocd usbutils vim python2 libpcap-dev
 
 # Install some ROS packages that might not be installed by default
 
@@ -25,7 +25,8 @@ RUN apt update && \
     ros-humble-plotjuggler-ros ros-humble-joint-state-publisher-gui \
     ros-humble-rqt-joint-trajectory-controller ros-humble-gazebo-ros-pkgs \
     ros-humble-ros2-control ros-humble-ros2-controllers \
-    ros-humble-gazebo-ros2-control
+    ros-humble-gazebo-ros2-control  ros-humble-librealsense2* \
+    ros-humble-realsense2-* ros-humble-pointcloud-to-laserscan
 
 # Install some python related non-default dependencies
 
@@ -38,10 +39,26 @@ ENV ROS2_WS_ROOT="/workspace/ros2_ws"
 # Set up ROS2 workspace in the image
 
 COPY ./grimorio /workspace
-RUN cd ${ROS2_WS_ROOT} && \
-    . /opt/ros/${ROS_DISTRO}/setup.sh && \
-    rosdep install -y --from-paths src --ignore-src && \
-    colcon build
+
+RUN cd ~ \
+    && git clone https://github.com/AltoRobotics/rslidar_msg.git \
+    && git clone --branch humble https://github.com/ros-drivers/phidgets_drivers.git \
+    && git clone --branch humble https://github.com/AltoRobotics/imu_tools.git
+
+RUN cd ~ \
+    && git clone --branch ros2_humble https://github.com/AltoRobotics/rslidar_sdk.git \
+    && cd rslidar_sdk \
+    && git submodule init \
+    && git submodule update
+
+RUN bash -c ". /opt/ros/${ROS_DISTRO}/setup.bash \
+    && cd ~/imu_tools && colcon build && source ./install/setup.bash \
+    && cd ~/phidgets_drivers && colcon build && source ./install/setup.bash \
+    && cd ~/rslidar_msg && colcon build && source ./install/setup.bash \
+    && cd ~/rslidar_sdk && colcon build && source ./install/setup.bash \
+    && cd ${ROS2_WS_ROOT} \
+    && rosdep install -y --from-paths src --ignore-src \
+    && colcon build"
 
 # Set up Starship
 
