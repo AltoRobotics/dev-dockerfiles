@@ -12,21 +12,40 @@ RUN apt update && \
 
 # Fetch dependencies and packages
 
-RUN apt update && \
-    apt -y install --no-install-recommends gperf x11-apps glmark2 \
-    ccache curl tmux wget can-utils  \
+RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
+    && apt-get -y install --no-install-recommends gperf \
+    ccache curl dfu-util device-tree-compiler wget can-utils  \
     python3-dev python3-pip python3-setuptools python3-tk python3-wheel xz-utils file gdb htop \
-    libsdl2-dev libmagic1 sudo udev libncursesw5-dev openocd usbutils vim python2 libpcap-dev
+    libsdl2-dev libmagic1 sudo udev libncursesw5 libncursesw5-dev usbutils vim python2 libpcap-dev libmodbus-dev
 
 # Install some ROS packages that might not be installed by default
 
-RUN apt update && \
-    apt install -y ros-dev-tools ros-humble-rosbridge-server \
-    ros-humble-plotjuggler-ros ros-humble-joint-state-publisher-gui \
-    ros-humble-rqt-joint-trajectory-controller ros-humble-gazebo-ros-pkgs \
-    ros-humble-ros2-control ros-humble-ros2-controllers \
-    ros-humble-gazebo-ros2-control  ros-humble-librealsense2* \
-    ros-humble-realsense2-* ros-humble-pointcloud-to-laserscan
+#RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg \
+#    && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(. /etc/os-release && #echo $UBUNTU_CODENAME) main" | tee /etc/apt/sources.list.d/ros2.list > /dev/null
+
+RUN apt-get update && sudo apt install -y ros-humble-desktop ros-humble-ros-base ros-dev-tools ros-humble-rosbridge-server \
+    ros-humble-plotjuggler-ros ros-humble-joint-state-publisher-gui ros-humble-joint-state-publisher \
+    ros-humble-rqt-joint-trajectory-controller ros-humble-xacro ros-humble-gazebo-ros-pkgs ros-humble-ros2-control \
+    ros-humble-ros2-controllers ros-humble-gazebo-ros2-control ros-humble-librealsense2* ros-humble-realsense2-* \
+    ros-humble-pointcloud-to-laserscan ros-humble-slam-toolbox ros-humble-robot-localization \
+    ros-humble-imu-tools ros-humble-phidgets-drivers
+    
+# Install gesture recognition requirements
+RUN apt update && apt install -y -qq \
+    libcanberra-gtk-module \
+    libcanberra-gtk3-module && \
+    pip install --ignore-installed \
+    mediapipe==0.10.7 \
+    numpy==1.26.1 \
+    opencv_contrib_python==4.8.1.78
+
+# Install YOLOv8 requirements
+RUN pip install --ignore-installed \
+    ultralytics==8.0.213 \
+    supervision==0.16 && \
+    pip uninstall -y \
+    matplotlib \
+    opencv_python_headless
 
 # Install some python related non-default dependencies
 

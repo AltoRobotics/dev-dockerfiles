@@ -24,7 +24,7 @@ services:
       - /dev/dri
       - /dev/ttyACM0
     privileged: true
-    command: ros2 launch valkyrie_bringup valkyrie_bringup_sim.launch.py launch_teleop:=false use_sim:=true rosbridge:=false websocket:=true quickmission:=true
+    command: ros2 launch valkyrie_bringup valkyrie_bringup_sim.launch.py launch_teleop:=false use_sim:=true rosbridge:=false websocket:=true goto:=true
 
   web:
     build:
@@ -32,3 +32,6 @@ services:
     image: develer/node-ui
     container_name: node-ui
     network_mode: host
+    env_file: .env
+    volumes:
+      - ./go/db.sqlite:/app/db.sqlite

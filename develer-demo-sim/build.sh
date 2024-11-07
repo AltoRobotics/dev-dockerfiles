@@ -19,7 +19,7 @@ cd ${NODE_UI_PATH}/web
 npm install
 cd ..
 cp .env.example .env
-make backend-populate-db
+make db-populate
 make frontend-build
 make backend-build
 cp server ../go
@@ -31,4 +31,3 @@ ROS_DISTRO=${ROS_DISTRO} docker compose build
 rm -rf ${GRIMORIO_PATH}
 rm -rf ${NODE_UI_PATH}
 rm go/server
-rm go/db.sqlite
